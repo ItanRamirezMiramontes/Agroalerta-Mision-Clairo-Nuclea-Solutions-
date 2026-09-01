@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="MVP de plataforma de inteligencia agrícola para productores, agroempresas y gobierno." />
+  <title>Agro Intelligence Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-icon">AG</div>
+        <div>
+          <div class="brand-name">Agro Intelligence</div>
+          <div class="brand-subtitle">Decision Infrastructure</div>
+        </div>
+      </div>
+
+      <div class="tenant-card">
+        <div class="tenant-dot"></div>
+        <div>
+          <strong>Núcleo Jalisco</strong>
+          <span>Entorno demostrativo</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-item active" data-section="overview" aria-current="page">
+          <span class="nav-icon">01</span>
+          <span>Resumen ejecutivo</span>
+        </button>
+        <button class="nav-item" data-section="field">
+          <span class="nav-icon">02</span>
+          <span>Parcela inteligente</span>
+        </button>
+        <button class="nav-item" data-section="ai">
+          <span class="nav-icon">03</span>
+          <span>Asistencia IA</span>
+        </button>
+        <button class="nav-item" data-section="government">
+          <span class="nav-icon">04</span>
+          <span>Vista territorial</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-health">
+          <div>
+            <span>Salud del sistema</span>
+            <strong>Operacional</strong>
+          </div>
+          <span class="status-pill online">Online</span>
+        </div>
+        <small>3 parcelas · 4 cultivos · operación activa</small>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">AGRO INTELLIGENCE / <span id="breadcrumbCurrent">RESUMEN EJECUTIVO</span></div>
+          <h1 id="pageTitle">Panel de inteligencia productiva</h1>
+          <p id="pageSubtitle">Monitoreo, predicción y decisiones sobre unidades productivas.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menú">Menú</button>
+          <div class="mode-switch" role="group" aria-label="Modo de visualización">
+            <button class="mode-btn active" data-mode="producer" aria-pressed="true">Productor</button>
+            <button class="mode-btn" data-mode="government" aria-pressed="false">Gobierno</button>
+          </div>
+          <div class="sync-status" aria-live="polite"><span class="sync-dot"></span><span id="lastSync">Actualizado
+              ahora</span></div>
+          <button class="ghost-btn" id="refreshAllBtn">Actualizar datos</button>
+        </div>
+      </header>
+
+      <section id="overview" class="page-section active-section">
+        <div class="executive-grid">
+          <article class="hero-insight card-dark">
+            <div>
+              <div class="label-light">RECOMENDACIÓN PRIORITARIA</div>
+              <h2 id="mainRecommendation">Reducir riego 12% en Parcela Norte durante las próximas 24 horas.</h2>
+              <p id="mainRecommendationText">La humedad media se mantiene por encima del rango objetivo y existe
+                probabilidad de precipitación durante la madrugada.</p>
+            </div>
+            <div class="hero-metrics">
+              <div>
+                <span>Confianza</span>
+                <strong id="mainConfidence">88%</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="card compact-card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">Índice productivo</span>
+                <h3>Salud general</h3>
+              </div>
+              <span class="score-ring" id="healthScore">86</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-value" style="width:86%"></div>
+            </div>
+            <div class="mini-row">
+              <span>Riesgo operativo</span>
+              <strong class="positive">Bajo</strong>
+            </div>
+          </article>
+        </div>
+
+        <div class="kpi-grid four">
+          <article class="metric-card">
+            <span>Humedad promedio</span>
+            <strong id="kpiMoisture">31.4%</strong>
+            <small class="positive">+1.8 pts vs objetivo</small>
+          </article>
+          <article class="metric-card">
+            <span>Consumo hídrico</span>
+            <strong id="kpiWater">3,860 m³</strong>
+            <small class="positive">−8.7% semana/semana</small>
+          </article>
+          <article class="metric-card">
+            <span>Rendimiento proyectado</span>
+            <strong id="kpiYield">14.9 t/ha</strong>
+            <small class="positive">+4.3% vs baseline</small>
+          </article>
+          <article class="metric-card">
+            <span>Riesgo 72h</span>
+            <strong id="kpiRisk">12%</strong>
+            <small>estrés hídrico</small>
+          </article>
+        </div>
+
+        <div class="two-col-grid wide-left">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">Parcela consolidada</span>
+                <h3>Mapa de condición productiva</h3>
+              </div>
+              <div class="inline-controls">
+                <select id="overviewCropSelect" class="select-control">
+                  <option value="berries">Frambuesa</option>
+                  <option value="avocado">Aguacate</option>
+                  <option value="agave">Agave</option>
+                  <option value="maize">Maíz</option>
+                </select>
+                <select id="overviewMetricSelect" class="select-control">
+                  <option value="moisture">Humedad</option>
+                  <option value="health">Salud</option>
+                  <option value="stress">Estrés</option>
+                  <option value="yield">Rendimiento</option>
+                </select>
+              </div>
+            </div>
+            <div class="map-layout">
+              <div class="heatmap-shell">
+                <canvas id="overviewHeatmap" width="760" height="420"></canvas>
+                <div class="heatmap-overlay">
+                  <span class="map-north">N</span>
+                  <div class="zone-label z1">Zona A</div>
+                  <div class="zone-label z2">Zona B</div>
+                  <div class="zone-label z3">Zona C</div>
+                </div>
+              </div>
+              <div class="legend-panel">
+                <span class="eyebrow">Escala</span>
+                <div class="gradient-legend"></div>
+                <div class="legend-scale">
+                  <span>Bajo</span><span>Objetivo</span><span>Alto</span>
+                </div>
+                <div class="map-summary">
+                  <div><span>Zonas óptimas</span><strong id="optimalZones">68%</strong></div>
+                  <div><span>Atención</span><strong id="attentionZones">21%</strong></div>
+                  <div><span>Críticas</span><strong id="criticalZones">11%</strong></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">Sugerencias</span>
+                <h3>Motor de decisión</h3>
+              </div>
+              <span class="status-pill online">IA + reglas</span>
+            </div>
+            <div id="suggestionList" class="suggestion-list"></div>
+          </article>
+        </div>
+
+        <div class="three-col-grid">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">Clima</span>
+                <h3>Próximas 72 horas</h3>
+              </div>
+              <span class="weather-temp">24°C</span>
+            </div>
+            <div id="weatherTimeline" class="weather-timeline"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">Predicción</span>
+                <h3>Rendimiento esperado</h3>
+              </div>
+            </div>
+            <div class="prediction-main">
+              <strong id="overviewYieldValue">14.9</strong>
+              <span>t/ha</span>
+            </div>
+            <div class="range-bar">
+              <div class="range-fill" style="left:28%;width:52%"></div>
+              <div class="range-marker" style="left:61%"></div>
+            </div>
+            <div class="range-labels"><span>13.8</span><span>15.6</span></div>
+            <p class="muted">Intervalo de confianza 80% basado en comportamiento histórico simulado.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">Datos externos</span>
+                <h3>Fuentes integradas</h3>
+              </div>
+            </div>
+            <div class="source-list">
+              <div><span>Telemetría IoT</span><strong>12 sensores</strong></div>
+              <div><span>Clima</span><strong>API simulada</strong></div>
+              <div><span>Satélite</span><strong>NDVI / NDMI</strong></div>
+              <div><span>Conocimiento</span><strong>INIFAP / SIAP</strong></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="field" class="page-section">
+        <div class="section-toolbar">
+          <div>
+            <span class="eyebrow">UNIDAD PRODUCTIVA</span>
+            <h2>Parcela inteligente</h2>
+          </div>
+          <div class="toolbar-controls">
+            <label class="control-field"><span>Unidad</span><select id="fieldSelector" class="select-control">
+                <option value="north">Parcela Norte · 6.2 ha</option>
+                <option value="center">Parcela Centro · 5.8 ha</option>
+                <option value="south">Parcela Sur · 6.4 ha</option>
+              </select></label>
+            <label class="control-field"><span>Cultivo</span><select id="cropSelector" class="select-control">
+                <option value="berries">Frambuesa</option>
+                <option value="avocado">Aguacate</option>
+                <option value="agave">Agave</option>
+                <option value="maize">Maíz</option>
+              </select></label>
+            <button class="primary-btn" id="simulateReadingBtn">Simular lectura</button>
+          </div>
+        </div>
+
+        <div class="field-layout">
+          <article class="card map-card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">MAPA DE CALOR</span>
+                <h3 id="fieldMapTitle">Humedad del suelo · Parcela Norte</h3>
+              </div>
+              <div class="segmented-control" id="fieldMetricTabs">
+                <button class="seg-btn active" data-metric="moisture">Humedad</button>
+                <button class="seg-btn" data-metric="temperature">Temperatura</button>
+                <button class="seg-btn" data-metric="stress">Estrés</button>
+                <button class="seg-btn" data-metric="yield">Rendimiento</button>
+              </div>
+            </div>
+            <div class="field-map-wrap">
+              <canvas id="fieldHeatmap" width="900" height="520"></canvas>
+              <div class="sensor-layer" id="sensorLayer"></div>
+              <div class="map-coordinate">
+                <span>20.300°N</span>
+                <span>103.420°W</span>
+              </div>
+            </div>
+            <div class="map-footer">
+              <div class="map-legend-inline">
+                <span><i class="legend-dot low"></i>Bajo</span>
+                <span><i class="legend-dot optimal"></i>Óptimo</span>
+                <span><i class="legend-dot high"></i>Alto</span>
+              </div>
+              <span class="muted">Resolución simulada: 10 × 10 m · Actualizado hace 2 min</span>
+            </div>
+          </article>
+
+          <aside class="field-side">
+            <article class="card">
+              <div class="card-head">
+                <div>
+                  <span class="eyebrow">ESTADO</span>
+                  <h3>Lectura actual</h3>
+                </div>
+              </div>
+              <div class="vertical-metrics">
+                <div><span>Humedad suelo</span><strong id="fieldMoisture">31.8%</strong></div>
+                <div><span>Temperatura suelo</span><strong id="fieldTemp">21.4°C</strong></div>
+                <div><span>Conductividad</span><strong id="fieldEC">1.7 mS/cm</strong></div>
+                <div><span>NDVI</span><strong id="fieldNdvi">0.76</strong></div>
+                <div><span>Evapotranspiración</span><strong id="fieldEt">3.7 mm/d</strong></div>
+              </div>
+            </article>
+
+            <article class="card recommendation-card">
+              <span class="eyebrow">RECOMENDACIÓN</span>
+              <h3 id="fieldRecommendation">Reducir riego 12%</h3>
+              <p id="fieldRecommendationText">Mantener el patrón actual produciría exceso de humedad en la zona noreste.
+              </p>
+              <div class="confidence-row">
+                <span>Confianza</span>
+                <strong id="fieldConfidence">88%</strong>
+              </div>
+              <button class="primary-btn full" id="applyRecommendationBtn">Registrar decisión</button>
+            </article>
+          </aside>
+        </div>
+
+        <div class="two-col-grid">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">HISTÓRICO</span>
+                <h3>Serie temporal de humedad</h3>
+              </div>
+              <span class="muted">7 días</span>
+            </div>
+            <canvas id="historyChart" width="760" height="260"></canvas>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">EVENTOS</span>
+                <h3>Últimas decisiones</h3>
+              </div>
+            </div>
+            <div id="decisionTimeline" class="decision-timeline"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="ai" class="page-section">
+        <div class="section-toolbar">
+          <div>
+            <span class="eyebrow">ASISTENCIA IA</span>
+            <h2>Asistente de inteligencia artificial</h2>
+          </div>
+          <span class="status-pill online">Modo explicable</span>
+        </div>
+
+        <div class="ai-layout">
+          <article class="card ai-chat-card">
+            <div class="ai-header">
+              <div class="ai-avatar">AI</div>
+              <div>
+                <strong>Agro Copilot</strong>
+                <span>Datos de parcela + conocimiento + predicciones</span>
+              </div>
+            </div>
+
+            <div id="chatMessages" class="chat-messages">
+              <div class="message assistant">
+                <div class="message-meta">Agro Copilot</div>
+                <div class="message-bubble">
+                  La Parcela Norte presenta humedad superior al objetivo en el cuadrante noreste. Con la lluvia
+                  estimada, recomiendo reducir 12% el riego durante 24 horas y revisar nuevamente después de la
+                  precipitación.
+                </div>
+              </div>
+            </div>
+
+            <div class="prompt-chips">
+              <button class="prompt-chip">¿Por qué reducir el riego?</button>
+              <button class="prompt-chip">¿Qué parcela tiene mayor riesgo?</button>
+              <button class="prompt-chip">Resume el estado del cultivo</button>
+              <button class="prompt-chip">¿Cómo está el balance de agua?</button>
+              <button class="prompt-chip">¿Hay señales de estrés?</button>
+              <button class="prompt-chip">¿Qué reviso hoy en campo?</button>
+            </div>
+
+            <form id="aiForm" class="ai-input-wrap">
+              <input id="aiInput" type="text" placeholder="Pregunta sobre parcelas, clima, rendimiento o riesgos..."
+                autocomplete="off" />
+              <button class="primary-btn" type="submit">Consultar</button>
+            </form>
+          </article>
+
+          <aside class="ai-side-stack">
+            <article class="card">
+              <span class="eyebrow">CONTEXTO ACTIVO</span>
+              <div class="context-stack">
+                <div><span>Cultivo</span><strong id="aiCrop">Frambuesa</strong></div>
+                <div><span>Parcela</span><strong id="aiField">Norte</strong></div>
+                <div><span>Modelo</span><strong>v0.8-demo</strong></div>
+                <div><span>Fuentes</span><strong>4 activas</strong></div>
+              </div>
+            </article>
+
+            <article class="card ai-analytics-card">
+              <div class="card-head">
+                <div>
+                  <span class="eyebrow">DATOS INTERNOS</span>
+                  <h3>Señales de la parcela</h3>
+                </div>
+                <span class="status-pill online">12 lecturas</span>
+              </div>
+              <div class="ai-stat-grid">
+                <div><span>Humedad actual</span><strong id="aiMoisture">31.8%</strong></div>
+                <div><span>NDVI</span><strong id="aiNdvi">0.76</strong></div>
+                <div><span>Eficiencia hídrica</span><strong id="aiEfficiency">82%</strong></div>
+                <div><span>Anomalías 7 días</span><strong id="aiAnomalies">2</strong></div>
+              </div>
+              <div class="ai-chart-block">
+                <div><span>Humedad del suelo · 12 días</span><strong id="aiMoistureTrend">+4.0 pts</strong></div>
+                <canvas id="aiMoistureChart" width="520" height="150"></canvas>
+              </div>
+              <div class="ai-chart-block">
+                <div><span>Rendimiento proyectado</span><strong id="aiYieldTrend">14.9 t/ha</strong></div>
+                <canvas id="aiYieldChart" width="520" height="150"></canvas>
+              </div>
+            </article>
+
+            <article class="card">
+              <span class="eyebrow">EXPLICABILIDAD</span>
+              <h3>Por qué recomienda</h3>
+              <div class="reason-list">
+                <div><span>Humedad sobre objetivo</span><strong>+32%</strong></div>
+                <div><span>Probabilidad de lluvia</span><strong>64%</strong></div>
+                <div><span>ET estimada</span><strong>3.7 mm/d</strong></div>
+                <div><span>Historial similar</span><strong>8 casos</strong></div>
+              </div>
+            </article>
+
+            <article class="card caution-card">
+              <span class="eyebrow">GOBERNANZA</span>
+              <p>Las recomendaciones del MVP son simuladas. En producción, cada salida debe registrar fuente, timestamp,
+                versión del modelo, evidencia y decisión humana.</p>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section id="government" class="page-section">
+        <div class="section-toolbar">
+          <div>
+            <span class="eyebrow">INTELIGENCIA TERRITORIAL</span>
+            <h2>Vista de Gobierno / Región</h2>
+          </div>
+          <div class="toolbar-controls">
+            <label class="control-field"><span>Territorio</span><select id="regionSelector" class="select-control">
+                <option value="cienega">Región Ciénega</option>
+                <option value="valles">Región Valles</option>
+                <option value="sur">Región Sur</option>
+                <option value="altos">Altos Sur</option>
+              </select></label>
+            <label class="control-field"><span>Producto</span><select id="govCropSelector" class="select-control">
+                <option value="all">Todos los productos</option>
+                <option value="berries">Berries</option>
+                <option value="agave">Agave</option>
+                <option value="avocado">Aguacate</option>
+                <option value="maize">Maíz</option>
+              </select></label>
+          </div>
+        </div>
+
+        <div class="gov-kpis kpi-grid five">
+          <article class="metric-card"><span>Unidades monitoreadas</span><strong
+              id="govUnits">148</strong><small>simuladas</small></article>
+          <article class="metric-card"><span>Superficie</span><strong id="govArea">3,480 ha</strong><small>con
+              datos</small></article>
+          <article class="metric-card"><span>Riesgo alto</span><strong id="govHighRisk">11%</strong><small>de
+              superficie</small></article>
+          <article class="metric-card"><span>Producción proyectada</span><strong id="govProduction">41.8K
+              t</strong><small>ciclo actual</small></article>
+        </div>
+
+        <div class="gov-map-grid">
+          <article class="card region-map-card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">MAPA REGIONAL</span>
+                <h3>Segmentación productiva y riesgo</h3>
+              </div>
+              <div class="segmented-control" id="govMapMode">
+                <button class="seg-btn active" data-mode="product">Producto</button>
+                <button class="seg-btn" data-mode="risk">Riesgo</button>
+                <button class="seg-btn" data-mode="water">Agua</button>
+              </div>
+            </div>
+            <div class="region-map-wrap">
+              <svg id="regionMap" viewBox="0 0 792 612" aria-label="Mapa regional de Jalisco" role="img">
+                <g id="municipalityLayer"></g>
+                <g class="map-city">
+                  <circle cx="462" cy="280" r="6"></circle>
+                  <text x="478" y="286">Guadalajara</text>
+                </g>
+              </svg>
+              <div id="regionTooltip" class="map-tooltip"></div>
+            </div>
+            <div class="gov-legend" id="govLegend"></div>
+          </article>
+
+          <aside class="gov-side-stack">
+            <article class="card">
+              <span class="eyebrow">SEGMENTACIÓN</span>
+              <h3>Productos monitoreados</h3>
+              <div id="productBreakdown" class="product-breakdown"></div>
+            </article>
+
+            <article class="card">
+              <span class="eyebrow">SEÑALES TEMPRANAS</span>
+              <h3>Alertas territoriales</h3>
+              <div id="govAlerts" class="gov-alerts"></div>
+            </article>
+          </aside>
+        </div>
+
+        <div class="two-col-grid">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">PROYECCIÓN</span>
+                <h3>Producción regional por producto</h3>
+              </div>
+            </div>
+            <canvas id="govProductionChart" width="760" height="300"></canvas>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">POLÍTICA / PROGRAMAS</span>
+                <h3>Indicadores de intervención</h3>
+              </div>
+            </div>
+            <div class="policy-list">
+              <div>
+                <span>Parcelas con eficiencia hídrica baja</span>
+                <strong>34</strong>
+              </div>
+              <div>
+                <span>Unidades candidatas a asistencia técnica</span>
+                <strong>21</strong>
+              </div>
+              <div>
+                <span>Superficie con riesgo elevado</span>
+                <strong>382 ha</strong>
+              </div>
+              <div>
+                <span>Productores con datos incompletos</span>
+                <strong>17%</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
